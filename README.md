@@ -2,7 +2,7 @@
 
 WhereWasI? - Comment me suis-je déplacé ?
 
-Projet réalisé par Théo PONTON, Julien GRENIER et Martin CHAUVIN dans le cadre du MOS 5.5 de l'Ecole Centrale Lyon
+**Projet réalisé par Théo PONTON, Julien GRENIER et Martin CHAUVIN dans le cadre du MOS 5.5 de l'Ecole Centrale Lyon**
 
 *La question à laquelle nous voulons répondre* 
 Nous voulons savoir quels déplacements ont été effectués par une personne :
