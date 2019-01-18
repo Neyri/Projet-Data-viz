@@ -26,3 +26,5 @@ Pour la visualisation, si les données sont interrompus (points de localisation m
 Un problème pourrait se poser si la personne dont laquelle les données sont traitées ne donne pas son consentement ou le retire. Afin de contourner ce problème, nous allons prendre les données d’une personne du groupe. Nous garantissons ainsi le consentement.
 Dans un but d’exposition du travail au un public plus large (comme Linkedin voir même pour le cours) nous allons anonymiser ces données. 
 
+Test
+
