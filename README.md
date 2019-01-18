@@ -2,7 +2,7 @@
 
 WhereWasI? - Comment me suis-je déplacé ?
 
-Projet réalisé par Théo PONTON, Julien GRENIER et Martin CHAUVIN dans le cadre du MOS 5.5 de l'Ecole Centrale Lyon
+**Projet réalisé par Théo PONTON, Julien GRENIER et Martin CHAUVIN dans le cadre du MOS 5.5 de l'Ecole Centrale Lyon**
 
 *La question à laquelle nous voulons répondre* 
 Nous voulons savoir quels déplacements ont été effectués par une personne :
@@ -24,7 +24,5 @@ Pour la visualisation, si les données sont interrompus (points de localisation m
 
 *Quels sont les possibles problèmes éthiques/données privées ?*
 Un problème pourrait se poser si la personne dont laquelle les données sont traitées ne donne pas son consentement ou le retire. Afin de contourner ce problème, nous allons prendre les données d’une personne du groupe. Nous garantissons ainsi le consentement.
-Dans un but d’exposition du travail au un public plus large (comme Linkedin voir même pour le cours) nous allons anonymiser ces données. 
-
-Test
+Dans un but d’exposition du travail au un public plus large (comme Linkedin voir même pour le cours) nous allons anonymiser ces données.
 
