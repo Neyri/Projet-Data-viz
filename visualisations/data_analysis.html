@@ -3,53 +3,61 @@
 <head>
   <meta charset="utf-8">
   <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="../scripts/build_latlong.js"></script>
+  <script src="../scripts/build_distrib.js"></script>
+  <script src="../scripts/support.js"></script>
   <style>
-    rect {
-      stroke: #ccc;
-      stroke-width: 1;
-    }
-
     body {
       background-color: #333;
       color: #ccc;
     }
+
+    /* #graph {
+      float: left;
+    }
+
+    #distribution {
+      float: right;
+    } */
   </style>
 </head>
 
 <body>
   <h1>Premier essai de graphique</h1>
+  <p>Voici la distribution des données à disposition</p>
+  <div id="distribution"></div>
   <p>Voici l'évolution de la longitude (en haut) et de la latitude (en bas) de notre position.</p>
   <div id="graph"></div>
   <script>
     // Create the svg
     var width = 960;
     var height = 550;
-    var svg = d3.select("#graph").append("svg")
+    var pos = d3.select("#graph").append("svg")
       .attr("width", width)
       .attr("height", height);
-    var loading_text = svg.append("text")
+    var loading_text = pos.append("text")
       .attr("x", width / 2)
       .attr("y", height / 2)
       .attr("fill", "#ccc")
       .attr("font-size", "20pt")
       .text("Loading ...");
     // load data
-    var data = {};
+    var data = [];
+    var dates = []
+    var color = d3.scaleOrdinal(d3.schemeCategory20)
     d3.json('../data/Historique des positions.json', function(e, d) {
       locations = d['locations'];
-      console.log(locations[0]);
-      data['date'] = [];
-      data['long'] = [];
-      data['lat'] = [];
-      data['alt'] = [];
       // As we have a lot a data, we will only use a point out of 100
       for (var i = 0; i < locations.length; i++) {
+        loc = locations[locations.length - i - 1];
+        dates.push(new Date(Number(loc['timestampMs'])));
         if (i % 100 == 0) {
-          loc = locations[locations.length - i - 1];
-          data['date'].push(new Date(Number(loc['timestampMs'])));
-          data['lat'].push(Math.floor(loc['latitudeE7'] / 1e7));
-          data['long'].push(Math.floor(loc['longitudeE7'] / 1e7));
-          data['alt'].push(Math.floor(loc['altitude']));
+          info = {}
+          info['date'] = new Date(Number(loc['timestampMs']));
+          info['lat'] = Math.floor(loc['latitudeE7'] / 1e7);
+          info['long'] = Math.floor(loc['longitudeE7'] / 1e7);
+          info['alt'] = Math.floor(loc['altitude']);
+          data.push(info);
         }
       }
       loading_text.remove();
@@ -57,77 +65,8 @@
     })
 
     function main() {
-      var xmin = 30;
-      var xmax = width - 30;
-      var ymin = 10;
-      var margin = 15
-      var ymax = height - 50;
-      var y_lat = d3.scaleLinear()
-        .domain([d3.min(data['lat']), d3.max(data['lat'])])
-        .range([ymax, ymax / 2 + margin]);
-      var y_long = d3.scaleLinear()
-        .domain([d3.min(data['long']), d3.max(data['long'])])
-        .range([ymax / 2 - margin, ymin]);
-
-      var x = d3.scaleBand()
-        .domain(d3.range(data['date'].length + 1)) //d3.extent(data, (d) => d['AAPL']['x']))
-        .range([xmin, xmax])
-      // .paddingInner(0.1);
-
-      var tmin = d3.min(data['date'])
-      var tmax = d3.max(data['date'])
-      var t = d3.scaleTime()
-        .domain([tmin, tmax])
-        .range([xmin, xmax])
-
-      var color = d3.scaleOrdinal(d3.schemeCategory20)
-
-      var xAxis = d3.axisBottom(t)
-        .ticks(d3.timeMonth);
-
-      var yAxis_lat = d3.axisLeft(y_lat)
-      var yAxis_long = d3.axisLeft(y_long)
-
-      // Bind data
-      var line_lat = d3.line()
-        .x((d, i) => x(i + 1))
-        .y((d, i) => y_lat(d));
-
-      var line_long = d3.line()
-        .x((d, i) => x(i + 1))
-        .y((d, i) => y_long(d));
-
-      svg.append("g")
-        .attr("transform", "translate(" + 0 + ", " + y_lat(0) + ")")
-        .attr("class", "x axis")
-        .call(xAxis);
-      svg.append("g")
-        .attr("transform", "translate(" + (xmin) + ", " + 0 + ")")
-        .attr("class", "y axis")
-        .call(yAxis_lat);
-      svg.selectAll("#lat").data([data['lat']]).enter()
-        .append("path")
-        .attr("class", "line")
-        .attr("d", line_lat)
-        .attr("stroke", color(0))
-        .attr('stroke-width', 2)
-        .attr("fill", "none");
-
-      svg.append("g")
-        .attr("transform", "translate(" + 0 + ", " + y_long(0) + ")")
-        .attr("class", "x axis")
-        .call(xAxis);
-      svg.append("g")
-        .attr("transform", "translate(" + (xmin) + ", " + 0 + ")")
-        .attr("class", "y axis")
-        .call(yAxis_long);
-      svg.selectAll("#long").data([data['long']]).enter()
-        .append("path")
-        .attr("class", "line")
-        .attr("d", line_long)
-        .attr("stroke", color(1))
-        .attr('stroke-width', 2)
-        .attr("fill", "none");
+      build_distrib(dates)
+      build_latlong(data)
     }
   </script>
 </body>
