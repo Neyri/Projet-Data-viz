@@ -10,7 +10,7 @@
   <style>
     body {
       background-color: #333;
-      color: #ccc;
+      color: #e6eeff;
       font-family: century-gothic, arial;
     }
   </style>
@@ -29,11 +29,16 @@
       .attr("width", width)
       .attr("height", height);
     var loading_text = loading.append("text")
-      .attr("x", width / 2)
+      .attr("x", width / 2 - 50)
       .attr("y", height / 2)
       .attr("fill", "#ccc")
       .attr("font-size", "20pt")
-      .text("Loading ...");
+      .text("Loading");
+    var loading_img = loading.append("image")
+      .attr("x", width / 2 + 60)
+      .attr("y", height / 2 - 25)
+      .attr("width", 30)
+      .attr("xlink:href", "../img/loading.gif")
     // load data
     var data = [];
     var dates = []
