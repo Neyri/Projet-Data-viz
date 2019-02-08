@@ -10,29 +10,20 @@
     body {
       background-color: #333;
       color: #ccc;
+      font-family: century-gothic, arial;
     }
-
-    /* #graph {
-      float: left;
-    }
-
-    #distribution {
-      float: right;
-    } */
   </style>
 </head>
 
 <body>
-  <h1>Premier essai de graphique</h1>
-  <p>Voici la distribution des données à disposition</p>
+  <h1 id="titre">Premier essai de graphique</h1>
   <div id="loading"></div>
   <div id="distribution"></div>
-  <p>Voici l'évolution de la longitude, de la latitude et de l'altitude de notre position.</p>
   <div id="graph"></div>
   <script>
     // Create the svg
-    var width = 960;
-    var height = 800;
+    var width = window.innerWidth - 20;
+    var height = window.innerHeight - document.getElementById('titre').clientHeight - 100;
     var loading = d3.select("#loading").append("svg")
       .attr("width", width)
       .attr("height", height);
@@ -48,10 +39,10 @@
     var color = d3.scaleOrdinal(d3.schemeCategory20)
     d3.json('../data/Historique des positions.json', function(e, d) {
       locations = d['locations'];
-      // As we have a lot a data, we will only use a point out of 100
       for (var i = 0; i < locations.length; i++) {
         loc = locations[locations.length - i - 1];
         dates.push(new Date(Number(loc['timestampMs'])));
+        // As we have a lot a data, we will only use a point out of 100
         if (i % 100 == 0) {
           info = {}
           info['date'] = new Date(Number(loc['timestampMs']));
@@ -70,11 +61,19 @@
         }
       }
       loading.remove();
+
       main();
     })
 
     function main() {
+      d3.select('#distribution')
+        .append('p')
+        .html('Voici la distribution des données à disposition')
       build_distrib(dates)
+
+      d3.select('#graph')
+        .append('p')
+        .html("Voici l'évolution de la longitude, de la latitude et de l'altitude de notre position.")
       build_latlong(data)
     }
   </script>
