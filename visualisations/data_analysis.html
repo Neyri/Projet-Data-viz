@@ -2,8 +2,12 @@
 
 <head>
   <meta charset="utf-8">
+  <link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css">
+  <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="../scripts/build_latlong.js"></script>
+  <script src="../scripts/build_map.js"></script>
   <script src="../scripts/build_distrib.js"></script>
   <script src="../scripts/support.js"></script>
   <link rel="icon" href="../img/icon.png" />
@@ -13,12 +17,18 @@
       color: #e6eeff;
       font-family: century-gothic, arial;
     }
+
+    .map {
+      height: 400px;
+      width: 100%;
+    }
   </style>
 </head>
 
 <body>
   <h1 id="titre">Premier essai de graphique</h1>
   <div id="loading"></div>
+  <div id="map" class="map"></div>
   <div id="distribution"></div>
   <div id="graph"></div>
   <script>
@@ -61,18 +71,19 @@
         //   data.push(info);
         // }
         // As we have a lot a data, we will only use a point out of 100
-        if (i % 100 == 0) {
+        if (i % 1 == 0) {
           info = {}
           info['date'] = new Date(Number(loc['timestampMs']));
-          info['lat'] = Math.floor(loc['latitudeE7'] / 1e5) / 100;
-          info['long'] = Math.floor(loc['longitudeE7'] / 1e5) / 100;
+          info['lat'] = Math.floor(loc['latitudeE7'] / 1e3) / 1e4;
+          info['long'] = Math.floor(loc['longitudeE7'] / 1e3) / 1e4;
+          info['activity'] = loc['activity']
           if (loc['altitude']) {
             info['alt'] = Math.floor(loc['altitude']);
           } else {
             if (i == 0) {
               info['alt'] = 0
             } else {
-              info['alt'] = data[i / 100 - 1]['alt'];
+              info['alt'] = data[i / 1 - 1]['alt'];
             }
           }
           data.push(info);
@@ -84,6 +95,7 @@
     })
 
     function main() {
+      build_map(data.slice(500, 1000))
       d3.select('#distribution')
         .append('p')
         .html('Voici la distribution des données à disposition')
@@ -92,7 +104,7 @@
       d3.select('#graph')
         .append('p')
         .html("Voici l'évolution de la longitude, de la latitude et de l'altitude de notre position.")
-      build_latlong(data)
+      // build_latlong(data)
     }
   </script>
 </body>
