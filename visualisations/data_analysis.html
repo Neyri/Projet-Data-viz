@@ -41,19 +41,31 @@
       .attr("xlink:href", "../img/loading.gif")
     // load data
     var data = [];
-    var dates = []
+    var dates = [];
+    var distances = [];
     var color = d3.scaleOrdinal(d3.schemeCategory20)
     d3.json('../data/Historique des positions.json', function(e, d) {
       locations = d['locations'];
+      console.log(locations.slice(0, 1000))
       for (var i = 0; i < locations.length; i++) {
         loc = locations[locations.length - i - 1];
         dates.push(new Date(Number(loc['timestampMs'])));
+        // As we have a lot of data, we will compute the distance only every 5 points
+        // if (i % 5 == 0) {
+        //   if (i == 0) {
+        //     prev
+        //   }
+        //   info = {}
+        //   info['date'] = new Date(Number(loc['timestampMs']));
+        //   // ACOS(SIN(RADIANS(B2))*SIN(RADIANS(B3))+COS(RADIANS(B2))*COS(RADIANS(B3))*COS(RADIANS(C2-C3)))*6371
+        //   data.push(info);
+        // }
         // As we have a lot a data, we will only use a point out of 100
         if (i % 100 == 0) {
           info = {}
           info['date'] = new Date(Number(loc['timestampMs']));
-          info['lat'] = Math.floor(loc['latitudeE7'] / 1e7);
-          info['long'] = Math.floor(loc['longitudeE7'] / 1e7);
+          info['lat'] = Math.floor(loc['latitudeE7'] / 1e5) / 100;
+          info['long'] = Math.floor(loc['longitudeE7'] / 1e5) / 100;
           if (loc['altitude']) {
             info['alt'] = Math.floor(loc['altitude']);
           } else {
