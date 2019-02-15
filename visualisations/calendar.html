@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="../scripts/calendar.js"></script>
+  <link rel="icon" href="../img/icon.png" />
+  <style>
+    body {
+      background-color: #333;
+      color: #e6eeff;
+      font-family: century-gothic, arial;
+    }
+
+  </style>
+</head>
+
+<body>
+  <h1 id="titre">Calendrier</h1>
+  <div id="loading"></div>
+  <div id="calendar">Please choose a date : </div>
+  <script>
+    // Create the svg
+    var width = window.innerWidth - 20;
+    var height = window.innerHeight - document.getElementById('titre').clientHeight - 100;
+    var loading = d3.select("#loading").append("svg")
+      .attr("width", width)
+      .attr("height", height);
+    var loading_text = loading.append("text")
+      .attr("x", width / 2 - 50)
+      .attr("y", height / 2)
+      .attr("fill", "#ccc")
+      .attr("font-size", "20pt")
+      .text("Loading");
+    var loading_img = loading.append("image")
+      .attr("x", width / 2 + 60)
+      .attr("y", height / 2 - 25)
+      .attr("width", 30)
+      .attr("xlink:href", "../img/loading.gif")
+    // load data
+    var data = [];
+    var dates = [];
+    var distances = [];
+    var color = d3.scaleOrdinal(d3.schemeCategory20)
+    d3.json('../data/data.json', function(e, d) {
+      locations = d; 
+      for (var i = 0; i < locations.length; i++) {
+        loc = locations[locations.length - i - 1];
+        dates.push(new Date(Number(loc['timestampMs'])));
+        if (i % 100 == 0) {
+          info = {}
+          info['date'] = new Date(Number(loc['timestampMs']));
+          info['lat'] = Math.floor(loc['latitudeE7'] / 1e5) / 100;
+          info['long'] = Math.floor(loc['longitudeE7'] / 1e5) / 100;
+          if (loc['altitude']) {
+            info['alt'] = Math.floor(loc['altitude']);
+          } else {
+            if (i == 0) {
+              info['alt'] = 0
+            } else {
+              info['alt'] = data[i / 100 - 1]['alt'];
+            }
+          }
+          data.push(info);
+        }
+      }
+      loading.remove();
+
+      main();
+    })
+	
+    function main() {
+		d3.select('#calendar')
+        .append('input')
+        .attr('type', 'date')
+		.attr('min', get_date_min(dates))
+		.attr('max', get_date_max(dates))
+		.attr('value', get_date_min(dates))
+    }
+  </script>
+</body>
