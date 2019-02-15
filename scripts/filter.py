@@ -1,4 +1,5 @@
 import json
+import datetime
 
 file = 'data\Historique des positions.json'
 
@@ -10,7 +11,11 @@ data = data['locations']
 data_to_keep = []
 for d in data:
     if 'activity' in d.keys():
-        data_to_keep.append(d)
+        # print(d)
+        timestamp = int(d['timestampMs'])
+        date = datetime.datetime.fromtimestamp(timestamp / 1e3)
+        if date.year >= 2018:
+            data_to_keep.append(d)
 
 with open('data\data.json', 'w') as outfile:
     json.dump(data_to_keep, outfile)

@@ -44,8 +44,8 @@
     var dates = [];
     var distances = [];
     var color = d3.scaleOrdinal(d3.schemeCategory20)
-    d3.json('../data/Historique des positions.json', function(e, d) {
-      locations = d['locations'];
+    d3.json('../data/data.json', function(e, d) {
+      locations = d; //['locations'];
       console.log(locations.slice(0, 1000))
       for (var i = 0; i < locations.length; i++) {
         loc = locations[locations.length - i - 1];
