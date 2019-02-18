@@ -23,3 +23,15 @@ function date_to_str(date){
 	year = date.getFullYear().toString();
 	return year + "-" + month + "-" + day;
 }
+
+function get_daily_locations(locations, date){
+	// filter locations by date of the day
+	locations_of_the_day = []
+	for (var i = 0; i < locations.length; i++) {
+		if (date_to_str(new Date(Number(locations[i]['timestampMs']))) == date)
+		{
+			locations_of_the_day.push(locations[i]);
+		}
+	}
+	return locations_of_the_day;
+}
