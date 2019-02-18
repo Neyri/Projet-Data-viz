@@ -35,3 +35,22 @@ function get_daily_locations(locations, date){
 	}
 	return locations_of_the_day;
 }
+
+function get_daily_locations_and_time(locations, date, time){
+	// filter locations by date of the day and between time1 and time2
+	time = time.split(",");
+	time1 = parseInt(time[0])
+	time2 = parseInt(time[1])
+	locations_of_the_day = []
+	for (var i = 0; i < locations.length; i++) {
+		date_precise = new Date(Number(locations[i]['timestampMs']));
+		time_normalized = (date_precise.getHours() + date_precise.getMinutes()/60)/24*100;
+		console.log(date_to_str(date_precise) == date, time_normalized < time2, time_normalized > time1)
+		if (date_to_str(date_precise) == date && (time_normalized < time2) && (time_normalized > time1))
+		{
+			console.log('here');
+			locations_of_the_day.push(locations[i]);
+		}
+	}
+	return locations_of_the_day;
+}

@@ -2,18 +2,22 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="../scripts/calendar.js"></script>
   <script src="../scripts/activity.js"></script>
+  <script src="../multirange-gh-pages/multirange.js"></script>
+  <link rel="stylesheet" href="../multirange-gh-pages/multirange.css">
   <link rel="icon" href="../img/icon.png" />
   <style>
+  @import url(https://fonts.googleapis.com/css?family=Dr+Sugiyama);
     body {
       background-color: #333;
       color: #e6eeff;
       font-family: century-gothic, arial;
     }
 	.global_input{
-		width : 150px;
+		width : 400px;
 	}
   </style>
 </head>
@@ -32,6 +36,12 @@
 				<option selected="selected">Martin Chavin</option>
 				<option>Théo Ponton</option>
 			</select>
+		</td>
+	  </tr>
+	  <tr>
+		<td>Please choose the time :</td>
+		<td>
+			<input id="input_time" class="global_input" type="range" multiple value="0,100" oninput="change_time()"/>
 		</td>
 	  </tr>
 	</table>
@@ -60,7 +70,9 @@
     var distances = [];
     var color = d3.scaleOrdinal(d3.schemeCategory20)
     d3.json('../data/data.json', function(e, d) {
-      locations = d; 
+      locations = d;
+		var daily_locations = [];
+		var daily_locations_time = [];
       for (var i = 0; i < locations.length; i++) {
         loc = locations[locations.length - i - 1];
         dates.push(new Date(Number(loc['timestampMs'])));
@@ -86,9 +98,14 @@
       main();
     })
 	
-	function change_date(new_date){
+	function change_date(){
 		daily_locations = get_daily_locations(locations, document.getElementById('calendar_value').value)
 		build_proba_activities(daily_locations)
+	}
+	
+	function change_time(){
+		daily_locations_time = get_daily_locations_and_time(daily_locations, document.getElementById('calendar_value').value, document.getElementById('input_time').value);
+		build_proba_activities(daily_locations_time)
 	}
 	
     function main() {
@@ -101,6 +118,7 @@
 		.attr('class', 'global_input')
 		.attr('id', 'calendar_value')
 		.attr('oninput', 'change_date()')
+		console.log(locations);
 		
 		daily_locations = get_daily_locations(locations, document.getElementById('calendar_value').value)
 		build_proba_activities(daily_locations)
