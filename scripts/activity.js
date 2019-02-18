@@ -19,14 +19,15 @@ function build_proba_activities(daily_locations)
 {	
 	d3.select("#probas_actis").remove()
 	daily_activities = get_daily_activities(daily_locations);
-
+	
+	var legend_width = 200;
 	var margin = {top: 20, right: 20, bottom: 20, left: 30};
-	var width = 800 - margin.left - margin.right,
+	var width = 1000 - margin.left - margin.right - legend_width,
     height = 400 - margin.top - margin.bottom;
 	
 	var svg = d3.select("body").append("svg")
 		.attr("id", "probas_actis")
-		.attr("width", width + margin.left + margin.right)
+		.attr("width", width + margin.left + margin.right + legend_width)
 		.attr("height", height + margin.top + margin.bottom)
 		.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
@@ -84,5 +85,25 @@ function build_proba_activities(daily_locations)
       .attr('transform', 'translate(0,' + 0 + ')')
       .attr('class', 'y axis')
       .call(yAxis);
+	
+	var legend = svg.selectAll(".legend")
+    .data(color.domain())
+  .enter().append("g")
+    .attr("class", "legend")
+    .attr("transform", function(d, i) { return "translate(" + width + "," + i * 20 + ")"; });
+
+  legend.append("rect")
+      .attr("x", 30)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+  legend.append("text")
+      .attr("x", 50)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "start")
+	  .style("fill", "#e6eeff")
+      .text(function(d) { return d; });
 
 }
