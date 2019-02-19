@@ -15,7 +15,7 @@ function get_daily_activities(daily_locations){
 	return daily_activities
 }
 
-function build_proba_activities(daily_locations)
+function build_proba_activities(daily_locations, color)
 {	
 	d3.select("#probas_actis").remove()
 	daily_activities = get_daily_activities(daily_locations);
@@ -50,8 +50,6 @@ function build_proba_activities(daily_locations)
 	
 	var xAxis = d3.axisBottom()
     	.scale(t);
-	
-	var color = d3.scaleOrdinal(d3.schemeCategory20);
 	
 	var symbols = d3.nest()
         .key(function(d) { return d.type; })

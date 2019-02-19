@@ -45,12 +45,28 @@ function get_daily_locations_and_time(locations, date, time){
 	for (var i = 0; i < locations.length; i++) {
 		date_precise = new Date(Number(locations[i]['timestampMs']));
 		time_normalized = (date_precise.getHours() + date_precise.getMinutes()/60)/24*100;
-		console.log(date_to_str(date_precise) == date, time_normalized < time2, time_normalized > time1)
 		if (date_to_str(date_precise) == date && (time_normalized < time2) && (time_normalized > time1))
 		{
-			console.log('here');
 			locations_of_the_day.push(locations[i]);
 		}
 	}
 	return locations_of_the_day;
+}
+
+function number_to_time(num){
+	// convert a number between 0 and 100 to a time
+	num = parseInt(num, 10);
+	hour = (Math.trunc(num/(100/24))).toString();
+	if (hour.length < 2) {
+		hour = '0' + hour;
+	}
+	min = (Math.trunc((num%24)/(24/60))).toString();
+	if (min.length < 2) {
+		min = '0' + min;
+	}
+	if ((hour + 'h' + min) == '24h10'){
+		hour = '23';
+		min = '59';
+	}
+	return (hour + 'h' + min)
 }

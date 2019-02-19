@@ -17,7 +17,10 @@
       font-family: century-gothic, arial;
     }
 	.global_input{
-		width : 400px;
+		width : 200px;
+	}
+	.double_slider{
+		width : 600px;
 	}
   </style>
 </head>
@@ -41,7 +44,8 @@
 	  <tr>
 		<td>Please choose the time :</td>
 		<td>
-			<input id="input_time" class="global_input" type="range" multiple value="0,100" oninput="change_time()"/>
+			<input id="input_time" class="double_slider" type="range" multiple value="0,100" oninput="change_time()"/>
+			<span id="time1">00h00</span> - <span id="time2">23h59</span>
 		</td>
 	  </tr>
 	</table>
@@ -100,12 +104,15 @@
 	
 	function change_date(){
 		daily_locations = get_daily_locations(locations, document.getElementById('calendar_value').value)
-		build_proba_activities(daily_locations)
+		build_proba_activities(daily_locations, color)
 	}
 	
 	function change_time(){
+		times = document.getElementById('input_time').value.split(",")
+		document.getElementById('time1').innerHTML = number_to_time(times[0])
+		document.getElementById('time2').innerHTML = number_to_time(times[1])
 		daily_locations_time = get_daily_locations_and_time(daily_locations, document.getElementById('calendar_value').value, document.getElementById('input_time').value);
-		build_proba_activities(daily_locations_time)
+		build_proba_activities(daily_locations_time, color)
 	}
 	
     function main() {
@@ -118,10 +125,9 @@
 		.attr('class', 'global_input')
 		.attr('id', 'calendar_value')
 		.attr('oninput', 'change_date()')
-		console.log(locations);
 		
 		daily_locations = get_daily_locations(locations, document.getElementById('calendar_value').value)
-		build_proba_activities(daily_locations)
+		build_proba_activities(daily_locations, color)
     }
   </script>
 </body>
