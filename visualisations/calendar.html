@@ -103,6 +103,9 @@
     })
 	
 	function change_date(){
+		document.getElementById('input_time').value="0,100"
+		document.getElementById('time1').innerHTML = "00h00"
+		document.getElementById('time2').innerHTML = "23h59"
 		daily_locations = get_daily_locations(locations, document.getElementById('calendar_value').value)
 		build_proba_activities(daily_locations, color)
 	}
