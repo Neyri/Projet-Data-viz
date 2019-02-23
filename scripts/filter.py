@@ -5,7 +5,7 @@ to_delete = ['IN_VEHICLE', 'IN_FOUR_WHEELER_VEHICLE',
              'IN_TWO_WHEELER_VEHICLE']
 to_merge = {
     'ON_FOOT': 'WALKING',
-    'TITLING': 'STILL'
+    'TILTING': 'STILL'
 }
 
 
@@ -43,3 +43,11 @@ for d in data:
 
 with open('data\data.json', 'w') as outfile:
     json.dump(data_to_keep, outfile)
+
+
+# for d in data:
+#     if 'activity' in d.keys():
+#         activity = d['activity'][0]['activity']
+#         for act in activity:
+#             if act['type'] not in activities:
+#                 activities.append(act['type'])

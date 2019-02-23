@@ -7,6 +7,7 @@
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="../scripts/build_latlong.js"></script>
+  <script src="../scripts/build_legend.js"></script>
   <script src="../scripts/build_map.js"></script>
   <script src="../scripts/build_distrib.js"></script>
   <script src="../scripts/support.js"></script>
@@ -22,12 +23,31 @@
       height: 400px;
       width: 100%;
     }
+
+    .legend {
+      display: inline-block;
+      margin-left: 10px;
+      font-size: 11pt;
+    }
+
+    .legend_square {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+    }
+
+    .legend_text {
+      padding: 5px;
+      display: inline-block;
+      text-transform: capitalize;
+    }
   </style>
 </head>
 
 <body>
   <h1 id="titre">Premier essai de graphique</h1>
   <div id="loading"></div>
+  <div id="legend"></div>
   <div id="map" class="map"></div>
   <div id="distribution"></div>
   <div id="graph"></div>
@@ -49,27 +69,28 @@
       .attr("y", height / 2 - 25)
       .attr("width", 30)
       .attr("xlink:href", "../img/loading.gif")
+
+    var activities = [
+      'STILL',
+      'IN_RAIL_VEHICLE',
+      'IN_ROAD_VEHICLE',
+      'WALKING',
+      'ON_BICYCLE',
+      'UNKNOWN',
+      'RUNNING',
+      'EXITING_VEHICLE'
+    ];
     // load data
     var data = [];
     var dates = [];
     var distances = [];
-    var color = d3.scaleOrdinal(d3.schemeCategory20)
+    var color = d3.scaleOrdinal(d3.schemeCategory10)
     d3.json('../data/data.json', function(e, d) {
       locations = d; //['locations'];
       console.log(locations.slice(0, 1000))
       for (var i = 0; i < locations.length; i++) {
         loc = locations[locations.length - i - 1];
         dates.push(new Date(Number(loc['timestampMs'])));
-        // As we have a lot of data, we will compute the distance only every 5 points
-        // if (i % 5 == 0) {
-        //   if (i == 0) {
-        //     prev
-        //   }
-        //   info = {}
-        //   info['date'] = new Date(Number(loc['timestampMs']));
-        //   // ACOS(SIN(RADIANS(B2))*SIN(RADIANS(B3))+COS(RADIANS(B2))*COS(RADIANS(B3))*COS(RADIANS(C2-C3)))*6371
-        //   data.push(info);
-        // }
         // As we have a lot a data, we will only use a point out of 100
         if (i % 1 == 0) {
           info = {}
@@ -95,16 +116,14 @@
     })
 
     function main() {
-      build_map(data.slice(500, 1000))
+      var data_to_use = data.slice(800, 1000)
+      build_legend(data_to_use)
+      build_map(data_to_use)
       d3.select('#distribution')
         .append('p')
         .html('Voici la distribution des données à disposition')
       build_distrib(dates)
 
-      d3.select('#graph')
-        .append('p')
-        .html("Voici l'évolution de la longitude, de la latitude et de l'altitude de notre position.")
-      // build_latlong(data)
     }
   </script>
 </body>
