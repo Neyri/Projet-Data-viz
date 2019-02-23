@@ -2,22 +2,53 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="../scripts/calendar.js"></script>
+  <script src="../scripts/activity.js"></script>
+  <script src="../multirange-gh-pages/multirange.js"></script>
+  <link rel="stylesheet" href="../multirange-gh-pages/multirange.css">
   <link rel="icon" href="../img/icon.png" />
   <style>
+  @import url(https://fonts.googleapis.com/css?family=Dr+Sugiyama);
     body {
       background-color: #333;
       color: #e6eeff;
       font-family: century-gothic, arial;
     }
-
+	.global_input{
+		width : 200px;
+	}
+	.double_slider{
+		width : 600px;
+	}
   </style>
 </head>
 
 <body>
   <h1 id="titre">Calendrier</h1>
-  <div id="calendar">Please choose a date : </div>
+  <table>
+	  <tr>
+		<td>Please choose a date : </td>
+		<td id="calendar"></td>
+	  </tr>
+	  <tr>
+		<td>Please choose someone :</td>
+		<td>
+			<select name="person" class="global_input">
+				<option selected="selected">Martin Chavin</option>
+				<option>Théo Ponton</option>
+			</select>
+		</td>
+	  </tr>
+	  <tr>
+		<td>Please choose the time :</td>
+		<td>
+			<input id="input_time" class="double_slider" type="range" multiple value="0,100" oninput="change_time()"/>
+			<span id="time1">00h00</span> - <span id="time2">23h59</span>
+		</td>
+	  </tr>
+	</table>
   <div id="loading"></div>
   <script>
     // Create the svg
@@ -43,7 +74,9 @@
     var distances = [];
     var color = d3.scaleOrdinal(d3.schemeCategory20)
     d3.json('../data/data.json', function(e, d) {
-      locations = d; 
+      locations = d;
+		var daily_locations = [];
+		var daily_locations_time = [];
       for (var i = 0; i < locations.length; i++) {
         loc = locations[locations.length - i - 1];
         dates.push(new Date(Number(loc['timestampMs'])));
@@ -69,6 +102,22 @@
       main();
     })
 	
+	function change_date(){
+		document.getElementById('input_time').value="0,100"
+		document.getElementById('time1').innerHTML = "00h00"
+		document.getElementById('time2').innerHTML = "23h59"
+		daily_locations = get_daily_locations(locations, document.getElementById('calendar_value').value)
+		build_proba_activities(daily_locations, color)
+	}
+	
+	function change_time(){
+		times = document.getElementById('input_time').value.split(",")
+		document.getElementById('time1').innerHTML = number_to_time(times[0])
+		document.getElementById('time2').innerHTML = number_to_time(times[1])
+		daily_locations_time = get_daily_locations_and_time(daily_locations, document.getElementById('calendar_value').value, document.getElementById('input_time').value);
+		build_proba_activities(daily_locations_time, color)
+	}
+	
     function main() {
 		d3.select('#calendar')
         .append('input')
@@ -76,6 +125,12 @@
 		.attr('min', get_date_min(dates))
 		.attr('max', get_date_max(dates))
 		.attr('value', get_date_min(dates))
+		.attr('class', 'global_input')
+		.attr('id', 'calendar_value')
+		.attr('oninput', 'change_date()')
+		
+		daily_locations = get_daily_locations(locations, document.getElementById('calendar_value').value)
+		build_proba_activities(daily_locations, color)
     }
   </script>
 </body>
