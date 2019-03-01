@@ -27,7 +27,6 @@ function build_proba_activities(daily_locations, color) {
     left: 30
   };
   var inner_width = d3.select("#div_proba_acti").node().getBoundingClientRect().width
-  console.log(inner_width)
   var width = inner_width - margin.left - margin.right - legend_width,
     height = 400 - margin.top - margin.bottom;
 
