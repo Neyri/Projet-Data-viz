@@ -1,7 +1,7 @@
-function build_map(data) {
-  console.log(data)
+function reset_map() {
+  d3.select('#map').html('')
   // Création de la carte
-  var map = new ol.Map({
+  map = new ol.Map({
     target: 'map',
     layers: [
       new ol.layer.Tile({
@@ -13,6 +13,16 @@ function build_map(data) {
       zoom: 10
     })
   });
+}
+
+function build_map(data) {
+  console.log(data)
+  map.getLayers().forEach(function(layer) {
+    if (layer && layer.type == "VECTOR") {
+      //console.log(layer.type)
+      map.removeLayer(layer);
+    }
+  })
   // Style du point
   var styleCircle = new ol.style.Style({
     image: new ol.style.Circle({
@@ -31,15 +41,6 @@ function build_map(data) {
     stroke: new ol.style.Stroke({
       color: '#333333',
       width: 1
-    })
-  });
-  var styleLine = new ol.style.Style({
-    stroke: new ol.style.Stroke({
-      color: 'rgba(0, 0, 255)',
-      width: 3
-    }),
-    fill: new ol.style.Fill({
-      color: 'rgb(0, 0, 255)'
     })
   });
   for (var i = 0; i < data.length - 1; i++) {
