@@ -6,13 +6,19 @@
   <script src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v5.3.0/build/ol.js"></script>
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="../scripts/calendar.js"></script>
+  <script src="../scripts/activity.js"></script>
+  <script src="../multirange-gh-pages/multirange.js"></script>
   <script src="../scripts/build_latlong.js"></script>
   <script src="../scripts/build_legend.js"></script>
   <script src="../scripts/build_map.js"></script>
   <script src="../scripts/build_distrib.js"></script>
   <script src="../scripts/support.js"></script>
+  <link rel="stylesheet" href="../multirange-gh-pages/multirange.css">
   <link rel="icon" href="../img/icon.png" />
   <style>
+    @import url(https://fonts.googleapis.com/css?family=Dr+Sugiyama);
+
     body {
       background-color: #333;
       color: #e6eeff;
@@ -21,13 +27,25 @@
 
     .map {
       height: 400px;
-      width: 100%;
+      width: 49%;
+      float: right;
+      display: inline-block;
     }
 
     .legend {
       display: inline-block;
       margin-left: 10px;
       font-size: 11pt;
+    }
+
+    #selection {
+      width: 100%;
+      display: inline-block;
+    }
+
+    #div_proba_acti {
+      width: 49%;
+      display: inline-block;
     }
 
     .legend_square {
@@ -41,6 +59,14 @@
       display: inline-block;
       text-transform: capitalize;
     }
+
+    .global_input {
+      width: 200px;
+    }
+
+    .double_slider {
+      width: 800px;
+    }
   </style>
 </head>
 
@@ -48,9 +74,32 @@
   <h1 id="titre">Premier essai de graphique</h1>
   <div id="loading"></div>
   <div id="legend"></div>
+  <div id="selection">
+    <table>
+      <tr>
+        <td>Please choose a date : </td>
+        <td id="calendar"></td>
+      </tr>
+      <tr>
+        <td>Please choose someone :</td>
+        <td>
+          <select name="person" class="global_input">
+  				<option selected="selected">Martin Chavin</option>
+  				<option>Théo Ponton</option>
+  			</select>
+        </td>
+      </tr>
+      <tr>
+        <td>Please choose the time :</td>
+        <td>
+          <input id="input_time" class="double_slider" type="range" multiple value="0,100" oninput="change_time()" />
+          <span id="time1">00h00</span> - <span id="time2">23h59</span>
+        </td>
+      </tr>
+    </table>
+  </div>
   <div id="map" class="map"></div>
-  <div id="distribution"></div>
-  <div id="graph"></div>
+  <div id="div_proba_acti"></div>
   <script>
     // Create the svg
     var width = window.innerWidth - 20;
@@ -83,47 +132,74 @@
     // load data
     var data = [];
     var dates = [];
-    var distances = [];
+    var daily_locations = [];
+    var daily_locations_time = [];
+    //var map;
     var color = d3.scaleOrdinal(d3.schemeCategory10)
     d3.json('../data/data.json', function(e, d) {
-      locations = d; //['locations'];
-      console.log(locations.slice(0, 1000))
+      locations = d;
       for (var i = 0; i < locations.length; i++) {
         loc = locations[locations.length - i - 1];
-        dates.push(new Date(Number(loc['timestampMs'])));
         // As we have a lot a data, we will only use a point out of 100
-        if (i % 1 == 0) {
-          info = {}
-          info['date'] = new Date(Number(loc['timestampMs']));
-          info['lat'] = Math.floor(loc['latitudeE7'] / 1e3) / 1e4;
-          info['long'] = Math.floor(loc['longitudeE7'] / 1e3) / 1e4;
-          info['activity'] = loc['activity']
-          if (loc['altitude']) {
-            info['alt'] = Math.floor(loc['altitude']);
+        dates.push(new Date(Number(loc['timestampMs'])));
+        info = {}
+        info['date'] = new Date(Number(loc['timestampMs']));
+        info['lat'] = Math.floor(loc['latitudeE7'] / 1e3) / 1e4;
+        info['long'] = Math.floor(loc['longitudeE7'] / 1e3) / 1e4;
+        info['activity'] = loc['activity']
+        if (loc['altitude']) {
+          info['alt'] = Math.floor(loc['altitude']);
+        } else {
+          if (i == 0) {
+            info['alt'] = 0
           } else {
-            if (i == 0) {
-              info['alt'] = 0
-            } else {
-              info['alt'] = data[i / 1 - 1]['alt'];
-            }
+            info['alt'] = data[i / 1 - 1]['alt'];
           }
-          data.push(info);
         }
+        data.push(info);
       }
       loading.remove();
 
       main();
     })
 
+    function change_date() {
+      document.getElementById('input_time').value = "0,100"
+      document.getElementById('time1').innerHTML = "00h00"
+      document.getElementById('time2').innerHTML = "23h59"
+      daily_locations = get_daily_locations(data, document.getElementById('calendar_value').value)
+      build(daily_locations)
+    }
+
+    function change_time() {
+      times = document.getElementById('input_time').value.split(",")
+      document.getElementById('time1').innerHTML = number_to_time(times[0])
+      document.getElementById('time2').innerHTML = number_to_time(times[1])
+      daily_locations_time = get_daily_locations_and_time(daily_locations, document.getElementById('calendar_value').value, document.getElementById('input_time').value);
+      build(daily_locations_time)
+    }
+
     function main() {
       var data_to_use = data.slice(800, 1000)
-      build_legend(data_to_use)
-      build_map(data_to_use)
-      d3.select('#distribution')
-        .append('p')
-        .html('Voici la distribution des données à disposition')
-      build_distrib(dates)
+      d3.select('#calendar')
+        .append('input')
+        .attr('type', 'date')
+        .attr('min', get_date_min(dates))
+        .attr('max', get_date_max(dates))
+        .attr('value', '2018-06-30')
+        .attr('class', 'global_input')
+        .attr('id', 'calendar_value')
+        .attr('oninput', 'change_date()')
 
+      daily_locations = get_daily_locations(data, document.getElementById('calendar_value').value)
+      reset_map()
+      build(daily_locations)
+      build_legend(data_to_use)
+    }
+
+    function build(data_to_use) {
+      build_map(data_to_use)
+      build_proba_activities(data_to_use, color)
     }
   </script>
 </body>
