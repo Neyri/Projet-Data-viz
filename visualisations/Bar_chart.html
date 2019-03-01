@@ -5,24 +5,53 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://openlayers.org/en/v5.3.0/css/ol.css" type="text/css">
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="../scripts/calendar.js"></script>
+    <script src="../scripts/activity.js"></script>
+    <script src="../multirange-gh-pages/multirange.js"></script>
+    <link rel="stylesheet" href="../multirange-gh-pages/multirange.css">
     <title>WhereWasI</title>
     <link rel="icon" href="img/icon.png" />
     <style>
         body {
-        background-color: #333;
-        color: #e6eeff;
-        font-family: century-gothic, arial;
+            background-color: #333;
+            color: #e6eeff;
+            font-family: century-gothic, arial;
+        }
+        
+        .global_input {
+            width: 200px;
+        }
+
+        .double_slider {
+              width: 600px;
         }
     </style>
 </head>
 
 <body>
     <h1 id="titre">Premier essai de Bar Chart</h1>
+    <table>
+        <tr>
+          <td>Please choose a date : </td>
+          <td id="calendar"></td>
+        </tr>
+        <tr>
+          <td>Please choose someone :</td>
+          <td>
+            <select name="person" class="global_input">
+				<option selected="selected">Martin Chavin</option>
+				<option>Théo Ponton</option>
+			</select>
+          </td>
+        </tr>
+    </table>
     <div id="loading"></div>
+    
+    <div id="bar_chart"></div>
     <script>
         // Creation of the svg
         var width = window.innerWidth - 20;
-        var height = window.innerHeight - document.getElementById('titre').clientHeight - 100;
+        var height = window.innerHeight - document.getElementById("titre").clientHeight - 100;
         var loading = d3.select("#loading").append("svg")
             .attr("width", width)
             .attr("width", height);
@@ -42,8 +71,40 @@
             
         
         //Load data
-        var = data[];
-        
+        var data = [];
+        var dates = [];
+        var distances = [];
+        var color = d3.scaleOrdinal(d3.schemeCategory20);
+        d3.json('../data/data.json', function(e, d) {
+            locations = d;
+            var daily_locations = [];
+            var daily_locations_time = [];
+            for (var i = 0; i < locations.length; i++) {
+              loc = locations[locations.length - i - 1];
+              dates.push(new Date(Number(loc['timestampMs'])));
+              if (i % 100 == 0) {
+                info = {}
+                info['date'] = new Date(Number(loc['timestampMs']));
+                info['lat'] = Math.floor(loc['latitudeE7'] / 1e5) / 100;
+                info['long'] = Math.floor(loc['longitudeE7'] / 1e5) / 100;
+                if (loc['altitude']) {
+                  info['alt'] = Math.floor(loc['altitude']);
+                } else {
+                  if (i == 0) {
+                    info['alt'] = 0
+                  } else {
+                    info['alt'] = data[i / 100 - 1]['alt'];
+                  }
+                }
+                data.push(info);
+                }
+            }
+            loading.remove();
+
+            main();
+            
+            
+        })
         
         
         function change_date(){
@@ -51,7 +112,22 @@
             document.getElementById('time1').innerHTML = "00h00";
             document.getElementById('time2').innerHTML = "23h59";
             daily_locations = get_daily_locations(locations, document.getElementById('calendar_value').value);
-            build_proba_activities(daily_locations, color);
+            build_barchart(daily_locations);
+        }
+        
+        function main() {
+            d3.select('#calendar')
+            .append('input')
+            .attr('type', 'date').attr('min', get_date_min(dates))
+            .attr('max', get_date_max(dates))
+            .attr('value', get_date_min(dates))
+            .attr('class', 'global_input')
+            .attr('id', 'calendar_value')
+            .attr('oninput', 'change_date()')
+            
+            daily_locations = get_daily_locations(data,document.getElementById('calendar_value').value)
+            console.log(daily_locations)
+            build_barchart(daily_locations)
         }
         
     </script>
