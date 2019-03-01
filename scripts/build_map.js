@@ -16,13 +16,10 @@ function reset_map() {
 }
 
 function build_map(data) {
-  console.log(data)
-  map.getLayers().forEach(function(layer) {
-    if (layer && layer.type == "VECTOR") {
-      //console.log(layer.type)
-      map.removeLayer(layer);
-    }
-  })
+  map.setLayerGroup(new ol.layer.Group());
+  map.addLayer(new ol.layer.Tile({
+    source: new ol.source.OSM()
+  }));
   // Style du point
   var styleCircle = new ol.style.Style({
     image: new ol.style.Circle({
