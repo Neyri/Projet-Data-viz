@@ -1,4 +1,4 @@
-function build_legend(data) {
+function build_legend() {
   var leg = d3.select('#legend');
   for (var activity of activities) {
     var text = activity.split('_').join(' ').toLowerCase();

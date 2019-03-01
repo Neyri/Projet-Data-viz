@@ -96,6 +96,15 @@
           <span id="time1">00h00</span> - <span id="time2">23h59</span>
         </td>
       </tr>
+      <tr>
+        <td>Please choose the type of visualisation of activity :</td>
+        <td>
+          <input type="radio" id="proba" name="type_acti" value="proba" oninput="change_visu()" checked>
+          <label for="proba">Probabilistic activity</label>
+          <input type="radio" id="main" name="type_acti" value="main" oninput="change_visu()">
+          <label for="main">Most likely activity</label>
+        </td>
+      </tr>
     </table>
   </div>
   <div id="map" class="map"></div>
@@ -179,8 +188,15 @@
       build(daily_locations_time)
     }
 
+    function change_visu() {
+      times = document.getElementById('input_time').value.split(",")
+      document.getElementById('time1').innerHTML = number_to_time(times[0])
+      document.getElementById('time2').innerHTML = number_to_time(times[1])
+      daily_locations_time = get_daily_locations_and_time(daily_locations, document.getElementById('calendar_value').value, document.getElementById('input_time').value);
+      build_proba_activities(daily_locations_time, color)
+    }
+
     function main() {
-      var data_to_use = data.slice(800, 1000)
       d3.select('#calendar')
         .append('input')
         .attr('type', 'date')
@@ -194,7 +210,7 @@
       daily_locations = get_daily_locations(data, document.getElementById('calendar_value').value)
       reset_map()
       build(daily_locations)
-      build_legend(data_to_use)
+      build_legend()
     }
 
     function build(data_to_use) {
