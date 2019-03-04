@@ -27,7 +27,6 @@ function date_to_str(date) {
 function get_daily_locations(all_data, date) {
   // filter locations by date of the day
   locations_of_the_day = []
-  console.log(date)
   for (var i = 0; i < all_data.length; i++) {
     //console.log(date_to_str(all_data[i]['date']))
     if (date_to_str(all_data[i]['date']) == date) {

@@ -7,6 +7,7 @@
   <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="../scripts/calendar.js"></script>
+  <script src="../scripts/activity_distance.js"></script>
   <script src="../scripts/activity.js"></script>
   <script src="../multirange-gh-pages/multirange.js"></script>
   <script src="../scripts/build_latlong.js"></script>
@@ -113,6 +114,7 @@
   </div>
   <div id="map" class="map"></div>
   <div id="div_proba_acti"></div>
+  <div id="div_distance_acti"></div>
   <script>
     // Create the svg
     var width = window.innerWidth - 20;
@@ -189,7 +191,7 @@
       document.getElementById('time1').innerHTML = number_to_time(times[0])
       document.getElementById('time2').innerHTML = number_to_time(times[1])
       daily_locations_time = get_daily_locations_and_time(daily_locations, document.getElementById('calendar_value').value, document.getElementById('input_time').value);
-      build(daily_locations_time)
+      build_time(daily_locations_time)
     }
 
     function change_visu() {
@@ -221,6 +223,12 @@
     function build(data_to_use) {
       build_map(data_to_use)
       build_proba_activities(data_to_use, color)
+	  build_distances_acti(data_to_use, color)
     }
+	
+	function build_time(data_to_use){
+		build_map(data_to_use)
+		build_proba_activities(data_to_use, color)
+	}
   </script>
 </body>
