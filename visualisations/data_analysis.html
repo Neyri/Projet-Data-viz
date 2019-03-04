@@ -24,13 +24,17 @@
       background-color: #333;
       color: #e6eeff;
       font-family: century-gothic, arial;
+	  width: 90%;
+	  margin-left: auto;
+	  margin-right: auto;
     }
-
-    .map {
+	
+	#container-map{
       height: 400px;
-      width: 49%;
-      float: right;
+      width: 47%;
       display: inline-block;
+	  margin-left: 1%;
+	  margin-right : 1%;
     }
 
     .legend {
@@ -38,6 +42,10 @@
       margin-left: 10px;
       font-size: 11pt;
     }
+	
+	.map{
+		height: 400px;
+	}
 
     #selection {
       width: 100%;
@@ -45,8 +53,17 @@
     }
 
     #div_proba_acti {
-      width: 49%;
+      width: 47%;
       display: inline-block;
+	  margin-left: 1%;
+	  margin-right : 1%;
+    }
+	
+	#div_distance_acti {
+      width: 47%;
+      display: inline-block;
+	  margin-left: 1%;
+	  margin-right : 1%;
     }
 
     .legend_square {
@@ -66,55 +83,73 @@
     }
 
     .double_slider {
-      width: 800px;
+      width: 710px;
     }
 
     h1 {
       text-align: center;
     }
+	
+	.graphic_legend{
+		border : 1px solid #e6eeff;
+		border-radius : 5px;
+		text-align: center;
+		visibility: hidden;
+	}
+	
+	#frame_to_choose{
+		border : 5px solid #e6eeff;
+		border-radius : 5px;
+		padding: 10px;
+	}
   </style>
 </head>
 
 <body>
   <h1 id="titre">Where was I ? How did I move ?<br/> The answer is right below...</h1>
   <div id="loading"></div>
-  <div id="legend"></div>
-  <div id="selection" style="display:none;">
-    <table>
-      <tr>
-        <td>Please choose a date : </td>
-        <td id="calendar"></td>
-      </tr>
-      <tr>
-        <td>Please choose someone :</td>
-        <td>
-          <select name="person" class="global_input">
-  				<option selected="selected">Martin Chavin</option>
-  				<option>Théo Ponton</option>
-  			</select>
-        </td>
-      </tr>
-      <tr>
-        <td>Please choose the time :</td>
-        <td>
-          <input id="input_time" class="double_slider" type="range" multiple value="0,100" oninput="change_time()" />
-          <span id="time1">00h00</span> - <span id="time2">23h59</span>
-        </td>
-      </tr>
-      <tr>
-        <td>Please choose the type of visualisation of activity :</td>
-        <td>
-          <input type="radio" id="proba" name="type_acti" value="proba" oninput="change_visu()" checked>
-          <label for="proba">Probabilistic activity</label>
-          <input type="radio" id="main" name="type_acti" value="main" oninput="change_visu()">
-          <label for="main">Most likely activity</label>
-        </td>
-      </tr>
-    </table>
+  <div id="frame_to_choose" style="visibility:hidden;">
+	  <div id="legend"></div>
+	  <div id="selection">
+		<table>
+		  <tr>
+			<td>Please choose a date : </td>
+			<td id="calendar"></td>
+		  </tr>
+		  <tr>
+			<td>Please choose someone :</td>
+			<td>
+			  <select name="person" class="global_input">
+					<option selected="selected">Martin Chavin</option>
+					<option>Théo Ponton</option>
+				</select>
+			</td>
+		  </tr>
+		  <tr>
+			<td>Please choose the time :</td>
+			<td>
+			  <input id="input_time" class="double_slider" type="range" multiple value="0,100" oninput="change_time()" />
+			  <span id="time1">00h00</span> - <span id="time2">23h59</span>
+			</td>
+		  </tr>
+		  <tr>
+			<td>Please choose the type of visualisation of activity :</td>
+			<td>
+			  <input type="radio" id="proba" name="type_acti" value="proba" oninput="change_visu()" checked>
+			  <label for="proba">Probabilistic activity</label>
+			  <input type="radio" id="main" name="type_acti" value="main" oninput="change_visu()">
+			  <label for="main">Most likely activity</label>
+			</td>
+		  </tr>
+		</table>
+	  </div>
+	 </div>
+  <div id="div_proba_acti"><p class="graphic_legend">coucou</p></div>
+  <div id="container-map">
+	<p class="graphic_legend">coucou</p>
+	<div id="map" class="map"></div>
   </div>
-  <div id="map" class="map"></div>
-  <div id="div_proba_acti"></div>
-  <div id="div_distance_acti"></div>
+  <div id="div_distance_acti"><p class="graphic_legend">coucou</p></div>
   <script>
     // Create the svg
     var width = window.innerWidth - 20;
@@ -203,7 +238,8 @@
     }
 
     function main() {
-      d3.select("#selection").style('display', 'initial')
+	  d3.select("#frame_to_choose").style('visibility','visible')
+	  d3.selectAll(".graphic_legend").style('visibility','visible')
       d3.select('#calendar')
         .append('input')
         .attr('type', 'date')

@@ -8,7 +8,7 @@ function build_distances_acti(daily_locations, color) {
     bottom: 20,
     left: 30
   };
-  var inner_width = 500 // d3.select("#div_distance_acti").node().getBoundingClientRect().width
+  var inner_width = d3.select("#div_distance_acti").node().getBoundingClientRect().width
   var width = inner_width - margin.left - margin.right,
     height = 400 - margin.top - margin.bottom;
 
