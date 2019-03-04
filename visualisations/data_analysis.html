@@ -67,10 +67,10 @@
     .double_slider {
       width: 800px;
     }
-	
-	h1{
-	text-align: center;
-	}
+
+    h1 {
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -78,7 +78,7 @@
   <h1 id="titre">Where was I ? How did I move ?<br/> The answer is right below...</h1>
   <div id="loading"></div>
   <div id="legend"></div>
-  <div id="selection">
+  <div id="selection" style="display:none;">
     <table>
       <tr>
         <td>Please choose a date : </td>
@@ -201,6 +201,7 @@
     }
 
     function main() {
+      d3.select("#selection").style('display:initial;')
       d3.select('#calendar')
         .append('input')
         .attr('type', 'date')
