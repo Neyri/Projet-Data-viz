@@ -46,13 +46,13 @@ function build_distances_acti(daily_locations, color) {
   for (var activity in distances) {
     svg.append("rect")
       .attr("x", 180)
-      .attr("y", 30 + offsety)
+      .attr("y", offsety)
       .attr("width", Math.max((inner_width - 180)/distances['TOTAL'] * distances[activity], 2.5))
       .attr("height", 18)
       .style("fill", color(activity));
     svg.append("text")
       .attr("x", 5)
-      .attr("y", 30 + offsety + 12)
+      .attr("y", offsety + 12)
       .style("text-anchor", "start")
       .style("font-size", "12px")
       .style("fill", color(activity))
