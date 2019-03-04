@@ -203,7 +203,7 @@
     }
 
     function main() {
-      d3.select("#selection").style('display:initial;')
+      d3.select("#selection").style('display', 'initial')
       d3.select('#calendar')
         .append('input')
         .attr('type', 'date')
@@ -223,12 +223,12 @@
     function build(data_to_use) {
       build_map(data_to_use)
       build_proba_activities(data_to_use, color)
-	  build_distances_acti(data_to_use, color)
+      build_distances_acti(data_to_use, color)
     }
-	
-	function build_time(data_to_use){
-		build_map(data_to_use)
-		build_proba_activities(data_to_use, color)
-	}
+
+    function build_time(data_to_use) {
+      build_map(data_to_use)
+      build_proba_activities(data_to_use, color)
+    }
   </script>
 </body>
