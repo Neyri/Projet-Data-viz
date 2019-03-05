@@ -27,7 +27,6 @@ function build_proba_activities(daily_locations, color) {
     left: 30
   };
   var inner_width = d3.select("#div_proba_acti").node().getBoundingClientRect().width
-  console.log(inner_width)
   var width = inner_width - margin.left - margin.right - legend_width,
     height = 400 - margin.top - margin.bottom;
 
@@ -63,13 +62,6 @@ function build_proba_activities(daily_locations, color) {
     })
     .entries(daily_activities);
 
-  symbols.forEach(function(s) {
-    s.values.forEach(function(d) {
-      d.date = d.date;
-      d.confidence = +d.confidence;
-    });
-  });
-
   var line = d3.line()
     .curve(d3.curveBasis)
     .x(function(d) {
@@ -79,16 +71,35 @@ function build_proba_activities(daily_locations, color) {
       return y(d.confidence);
     });
 
-  svg.selectAll(".line").data(symbols).enter()
-    .append("path")
-    .attr("class", "line")
-    .attr("d", function(d) {
-      return line(d.values);
-    })
-    .attr("stroke", function(d, i) {
-      return color(d.key);
-    })
-    .attr("fill", "none");
+  var checkbox_value = d3.select('input[name="type_acti"]:checked').node().value
+  if (checkbox_value == 'main') {
+    svg.selectAll(".bar").data(daily_locations.slice(0, -1)).enter()
+      .append('rect')
+      .attr('height', height)
+      .attr('width', (d, i) => t(daily_locations[i + 1].date) - t(d.date))
+      .attr('x', d => t(d.date))
+      .attr('y', 0)
+      .attr("fill", function(d, i) {
+        var fill = d3.color(color(d.activity[0]['type']));
+        fill.opacity = 0.5
+        return fill;
+      })
+      .attr("stroke", "none");
+  }
+
+  if (checkbox_value == 'proba') {
+    svg.selectAll(".line").data(symbols).enter()
+      .append("path")
+      .attr("class", "line")
+      .attr("d", function(d) {
+        return line(d.values);
+      })
+      .attr("stroke", function(d, i) {
+        return color(d.key);
+      })
+      .attr("fill", "none");
+  }
+
 
   svg.append('g')
     .attr('transform', 'translate(0,' + height + ')')
@@ -100,28 +111,5 @@ function build_proba_activities(daily_locations, color) {
     .attr('class', 'y axis')
     .call(yAxis);
 
-  // var legend = svg.selectAll(".legend")
-  //   .data(color.domain())
-  //   .enter().append("g")
-  //   .attr("class", "legend")
-  //   .attr("transform", function(d, i) {
-  //     return "translate(" + width + "," + i * 20 + ")";
-  //   });
-  //
-  // legend.append("rect")
-  //   .attr("x", 30)
-  //   .attr("width", 18)
-  //   .attr("height", 18)
-  //   .style("fill", color);
-  //
-  // legend.append("text")
-  //   .attr("x", 50)
-  //   .attr("y", 9)
-  //   .attr("dy", ".35em")
-  //   .style("text-anchor", "start")
-  //   .style("fill", "#e6eeff")
-  //   .text(function(d) {
-  //     return d;
-  //   });
 
 }
