@@ -120,11 +120,11 @@ Voici une meilleure visualisation de ce cadre :</p>
 
 <p style = "text-align : justify"> La première visualisation en haut à gauche est un line-chart qui représente la probabilité associée à chaque mode de transport (à pied, immobile, en voiture...). On rappelle que ces probabilités sont estimés par Google.
 Cette visualisation est double. Elle permet d'une part de voir sur une certaine échelle de temps la probabilité associée à chaque déplacement en cochant la case "Probabilistic activity" dans le cadre des paramètres (voir ci-dessous).</p>
-<img src = "img/line_chart_1.PNG" style = "margin-left :auto; margin-right : auto">
+<img src = "img/line_chart_1.PNG" style = "margin-left :auto; margin-right : auto; display : block">
 
 <p style = "text-align : justify">D'autre part, il est également possible de visualisé sous forme de bar-chart le mode de déplacement le plus probable pour plus de clarté en cochant la case "Most likely activity" (voir ci-dessous)</p>
 
-![line_chart_2](img/line_chart_2.PNG)
+<img src = "img/line_chart_2.PNG" style = "margin-left :auto; margin-right : auto; display : block">
 
 
 
@@ -132,7 +132,7 @@ Cette visualisation est double. Elle permet d'une part de voir sur une certaine 
 
 Cette visualisation disponible en haut à droite de l'écran permet de voir sur une carte les différentes positions pour l'échelle de temps sélectionnée (inférieure une journée).
 
-![map_1](img/map_1.PNG)
+<img src = "img/map_1.PNG" style = "margin-left :auto; margin-right : auto; display : block">
 
 Le zoom de la carte s'ajuste automatiquement pour visualiser l'ensemble des positions et déplacements réalisés sur la période de temps sélectionnée. Les trajets sont également colorés avec la couleur correspondant au mode de transport le plus probable.
 
@@ -142,7 +142,7 @@ Le zoom de la carte s'ajuste automatiquement pour visualiser l'ensemble des posi
 
 Ce bar-chart permet de visualiser pour la journée sélectionnée la distance réalisée pour chaque mode de transport. Pour le calcul, chaque distance est attribuée au mode de transport le plus probable et la somme est faite sur la journée. Attention, cette visualisation n'est pas modifiée par la restriction temporelle que l'on  peut choisir via le cadre des paramètres.
 
-![bar_chart_activity_1](img/bar_chart_activity_1.PNG)
+<img src = "img/bar_chart_activity_1.PNG" style = "margin-left :auto; margin-right : auto; display : block">
 
 
 
@@ -150,7 +150,7 @@ Ce bar-chart permet de visualiser pour la journée sélectionnée la distance r�
 
 Ce bar-chart permet de visualiser pour la journée sélectionnée la distance réalisée, quelque soit le mode de transport.
 
-![bar_chart_distance_1](img/bar_chart_distance_1.PNG)
+<img src = "img/bar_chart_distance_1.PNG" style = "margin-left :auto; margin-right : auto; display : block">
 
 
 
