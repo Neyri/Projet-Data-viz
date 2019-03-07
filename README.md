@@ -81,7 +81,7 @@ Nous avons ensuite traité ces données à l'aide des scripts Python présents d
 
 <p style="text-align : justify">Avant de nous lancer dans le développement, nous avons réalisé quelques design sheets. Ils sont tous disponibles sur la page d'accueil de notre site. Nous vous montrons ici la feuille finale correspondant à l'idée que nous nous sommes fait de notre site avant de commencer le développement :</p>
 
-![sheet_5](visualisations\sheet_5_bis.jpg)
+![sheet_5](visualisations/sheet_5_bis.jpg)
 
 
 
