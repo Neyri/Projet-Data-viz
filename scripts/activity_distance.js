@@ -41,7 +41,7 @@ function build_distances_acti(daily_locations, color) {
 		  distances['TOTAL'] = distances['TOTAL'] + distance
 	  }
   }
-  console.log(distances);
+  //console.log(distances);
   var offsety = 0;
   for (var activity in distances) {
     svg.append("rect")

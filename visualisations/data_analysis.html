@@ -16,6 +16,7 @@
   <script src="../scripts/build_map.js"></script>
   <script src="../scripts/build_distrib.js"></script>
   <script src="../scripts/support.js"></script>
+  <script src="../scripts/build_barchart.js"></script>
   <link rel="stylesheet" href="../multirange-gh-pages/multirange.css">
   <link rel="icon" href="../img/icon.png" />
   <style>
@@ -54,6 +55,13 @@
     }
 
     #div_proba_acti {
+      width: 47%;
+      display: inline-block;
+	  margin-left: 1%;
+	  margin-right : 1%;
+    }
+    
+    #div_distance_temps {
       width: 47%;
       display: inline-block;
 	  margin-left: 1%;
@@ -185,7 +193,14 @@
 	<img src="../img/close-window-icon-18-16.png" alt="Minimize" class="minimize" onclick="minimize('p3')"/>
 		This graphic represents the ditances that the selected person did during the selected day.
 	</p>
-</div>
+  </div>
+  <div id="div_distance_temps">
+    <p class="graphic_legend" id="p4">
+      <img src="../img/close-window-icon-18-16.png" alt="Minimize" class="minimize" onclick="minimize('p4')"/>
+      This graphic shows the distances achieved in a certain amount of time for a selected day.
+    </p>
+  </div>
+
   <script>
     // Create the svg
     var width = window.innerWidth - 20;
@@ -290,12 +305,15 @@
       reset_map()
       build(daily_locations)
       build_legend()
+      
+      //console.log(typeof(daily_locations[1].date.getUTCHours()))
     }
 
     function build(data_to_use) {
       build_map(data_to_use)
       build_proba_activities(data_to_use, color)
       build_distances_acti(data_to_use, color)
+      build_barchart(data_to_use)
     }
 
     function build_time(data_to_use) {
