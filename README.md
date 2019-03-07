@@ -120,7 +120,7 @@ Voici une meilleure visualisation de ce cadre :</p>
 
 <p style = "text-align : justify"> La première visualisation en haut à gauche est un line-chart qui représente la probabilité associée à chaque mode de transport (à pied, immobile, en voiture...). On rappelle que ces probabilités sont estimés par Google.
 Cette visualisation est double. Elle permet d'une part de voir sur une certaine échelle de temps la probabilité associée à chaque déplacement en cochant la case "Probabilistic activity" dans le cadre des paramètres (voir ci-dessous).</p>
-<img src = "img/line_chart_1.PNG" style = "text-align : center">
+<img src = "img/line_chart_1.PNG" style = "margin-left :auto; margin-right : auto">
 
 <p style = "text-align : justify">D'autre part, il est également possible de visualisé sous forme de bar-chart le mode de déplacement le plus probable pour plus de clarté en cochant la case "Most likely activity" (voir ci-dessous)</p>
 
