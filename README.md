@@ -23,3 +23,31 @@ Pour la visualisation, si les données sont interrompus (points de localisation 
 *Quels sont les possibles problèmes éthiques/données privées ?*
 Un problème pourrait se poser si la personne dont laquelle les données sont traitées ne donne pas son consentement ou le retire. Afin de contourner ce problème, nous allons prendre les données d'une personne du groupe. Nous garantissons ainsi le consentement.
 Dans un but d'exposition du travail au un public plus large (comme Linkedin voir même pour le cours) nous allons anonymiser ces données.
+
+
+
+
+
+## Visualisez VOS données
+
+Vous pouvez visualiser votre propre historique des positions Google.
+
+Pour cela, téléchargez vos données [ici](https://takeout.google.com/). Vous pouvez sélectionner toutes les données Google que vous souhaitez, mais il vous faut au moins sélectionner la catégorie *Historique des positions*.
+
+Vous allez ensuite recevoir un lien de téléchargement sur votre adresse gmail pour télécharger le fichier zip contenant toutes vos données. Le télécharger et le dézipper.
+
+Le fichier contenant vos positions est `Takeout/Historique des positions/Historique des positions.json`
+
+
+
+Téléchargez ce répertoire.
+
+Déplacez votre fichier `Historique des positions.json` dans le dossier `data` (n'ayez pas peur de remplacer notre fichier).
+
+Exécutez ensuite le script python `filter.py` contenu dans le dossier `scripts`. Celui-ci va créer un fichier `data.json` au bon format.
+
+
+
+Lancez un serveur local avec votre outil préféré. Le mien étant d'exécuter la commande suivante `python -m http.server`.
+
+Votre visualisation est finalement disponible [ici](http://localhost:8000/visualisations/data_analysis.html).
