@@ -60,14 +60,14 @@
       margin-left: 1%;
       margin-right: 1%;
     }
-    
+
     #div_distance_temps {
       width: 47%;
       display: inline-block;
-	  margin-left: 1%;
-	  margin-right : 1%;
+      margin-left: 1%;
+      margin-right: 1%;
     }
-	
+
 
     #div_distance_heure {
       width: 47%;
@@ -141,13 +141,13 @@
     .axis text {
       fill: #e6eeff;
     }
-	
-	#back-home{
-		width : 40px;
-		position : absolute;
-		top : 10px;
-		left : 10px;
-	}
+
+    #back-home {
+      width: 40px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
   </style>
 </head>
 
@@ -155,7 +155,7 @@
   <h1 id="titre">Where was I ? How did I move ?<br/> The answer is right below...</h1>
   <div id="loading"></div>
   <div id="frame_to_choose" style="visibility:hidden;">
-	<a href="../index.html"><img src="../img/black-button-home.svg" id ="back-home"></a>
+    <a href="../index.html"><img src="../img/black-button-home.svg" id ="back-home"></a>
     <img src="../img/Minimize-Window-icon.png" alt="Minimize" class="minimize" onclick="minimize('selection')" />
     <div id="legend"></div>
     <div id="selection">
@@ -197,15 +197,13 @@
     <div id="map" class="map"></div>
   </div>
   <div id="div_distance_acti">
-	<p class="graphic_legend" id="p3">
-	<img src="../img/close-window-icon-18-16.png" alt="Minimize" class="minimize" onclick="minimize('p3')"/>
-		This graphic represents the ditances that the selected person did during the selected day.
-	</p>
+    <p class="graphic_legend" id="p3">
+      <img src="../img/close-window-icon-18-16.png" alt="Minimize" class="minimize" onclick="minimize('p3')" /> This graphic represents the ditances that the selected person did during the selected day.
+    </p>
   </div>
   <div id="div_distance_temps">
     <p class="graphic_legend" id="p4">
-      <img src="../img/close-window-icon-18-16.png" alt="Minimize" class="minimize" onclick="minimize('p4')"/>
-      This graphic shows the distances achieved in a certain amount of time for a selected day.
+      <img src="../img/close-window-icon-18-16.png" alt="Minimize" class="minimize" onclick="minimize('p4')" /> This graphic shows the distances achieved in a certain amount of time for a selected day.
     </p>
   </div>
 
@@ -313,7 +311,7 @@
       reset_map()
       build(daily_locations)
       build_legend()
-      
+
       //console.log(typeof(daily_locations[1].date.getUTCHours()))
     }
 
