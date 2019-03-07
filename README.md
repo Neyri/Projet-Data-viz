@@ -1,25 +1,88 @@
-# WhereWasI? - Comment me suis-je déplacé ?
+# WhereWasI - Comment me suis-je déplacé ?
 
 **Projet réalisé par Théo PONTON, Julien GRENIER et Martin CHAUVIN dans le cadre du MOS 5.5 de l'Ecole Centrale Lyon**
 
+## Présentation du sujet
+
 *La question à laquelle nous voulons répondre*
-Nous voulons savoir quels déplacements ont été effectués par une personne :
-Dans quelles villes / pays (localisation sur une carte) cette personne a été
-Comment se sont répartis ses déplacements (entre 0 et 24 heures) pour chaque jour de la semaine
-La distance moyenne parcourue et avec quels moyens de transport pour chaque jour de la semaine
-Nous voulons également pouvoir sélectionner la période temporelle sur laquelle visualiser ces données.
 
-*De quel données avons nous besoin ?*
-Nous avons besoin de positions GPS d'une personne avec une fréquence de plusieurs fois par jour. Soit au minimum un triplet de type : latitude, longitude, temps du relevé de position.
-Pour chacune de ces positions, nous avons également besoin d'une estimation du mode de déplacement : statique, marche, course, vélo, voiture, ...
+<p style="text-align:justify">Nous voulons savoir quels déplacements ont été effectués par une personne : dans quelles villes et pays cette personne a été, comment se sont répartis ses déplacements durant la journée, quels moyens de transports cette personne a utilisé. </p>
 
-*Comment nous allons collecter les données*
-Nous allons utiliser les données liées aux comptes Google. Google permet de télécharger ses données personnelles dont les données de localisation. L'historique de position à disposition est très complet et fournit notamment les informations de positions et d'activité avec un interval de 2 minutes.
+*De quelles données avons nous besoin ?*
+<p style="text-align:justify">Nous avons besoin de positions GPS d'une personne avec une fréquence de plusieurs fois par jour. Soit au minimum un triplet de type : latitude, longitude, temps du relevé de position.
+Pour chacune de ces positions, nous avons également besoin d'une estimation du mode de déplacement : statique, marche, course, vélo, voiture, ...</p>
 
-*Quels sont les principaux risques de collection et visualisation de ces données ?*
-Pour la collection, il est possible que la personne ait désactivé l'historique des localisations. Dans ce cas, les données google ne sont pas disponibles et il faut se rabattre sur d'autres moyens comme les données de localisation Facebook ou Waze. Le problèmes c'est que les données de ces dernières application sont moins complètes que celles de google.
-Pour la visualisation, si les données sont interrompus (points de localisation manquant) cela peut poser problème. On peut mal interpréter un trajet qui comporte des segments manquants. Il y a aussi un risque que l'estimation de l'activité de déplacement faite par google soit fausse.
+## Présentation du jeu de données
 
-*Quels sont les possibles problèmes éthiques/données privées ?*
-Un problème pourrait se poser si la personne dont laquelle les données sont traitées ne donne pas son consentement ou le retire. Afin de contourner ce problème, nous allons prendre les données d'une personne du groupe. Nous garantissons ainsi le consentement.
-Dans un but d'exposition du travail au un public plus large (comme Linkedin voir même pour le cours) nous allons anonymiser ces données.
+<p style="text-align:justify">Le jeu de données utilisé sera celui fourni par les localisations de Google. Sur un compte Google, il est possible d'activer les localisations et de télécharger ses données. Voici le lien pour accéder à la page de téléchargement : <a href="https://support.google.com/accounts/answer/3024190?hl=fr">ici</a></p>
+
+<p style="text-align:justify">Le jeu de données est un Json qui contient des relevés toutes les 2 minutes environ. On y trouve des informations comme : la longitude, la latitude, l'altitude, la vitesse, l'heure, et une liste d'activités avec la confiance pour chacune.</p>
+
+```json
+"timestampMs" : "1540744774000",
+"latitudeE7" : 492884809,
+"longitudeE7" : -3045980,
+"accuracy" : 6,
+"velocity" : 0,
+"altitude" : 55,
+"verticalAccuracy" : 8,
+"activity" : [ {
+    "timestampMs" : "1540744775803",
+    "activity" : [ {
+        "type" : "STILL",
+        "confidence" : 71
+    }, {
+        "type" : "ON_FOOT",
+        "confidence" : 20
+    }, {
+        "type" : "WALKING",
+        "confidence" : 20
+    }, {
+        "type" : "IN_VEHICLE",
+        "confidence" : 3
+    }, {
+        "type" : "IN_RAIL_VEHICLE",
+        "confidence" : 3
+    }, {
+        "type" : "ON_BICYCLE",
+        "confidence" : 2
+    }, {
+        "type" : "UNKNOWN",
+        "confidence" : 2
+    }, {
+        "type" : "IN_ROAD_VEHICLE",
+        "confidence" : 2
+    }, {
+        "type" : "IN_TWO_WHEELER_VEHICLE",
+        "confidence" : 1
+    }, {
+        "type" : "IN_FOUR_WHEELER_VEHICLE",
+        "confidence" : 1
+    } ]
+} ]
+```
+
+Nous avons ensuite traité ces données à l'aide des scripts Python présents dans ce répertoire :
+
+- pris 1 points sur 12
+- fusion d'activités similaires
+- ...
+
+## Conception de la visualisation
+
+<p style="text-align : justify">Afin de répondre à la question que nous nous sommes posé. Nous avons choisi de faire 4 visualisations :
+ <ul>
+  <li>Une carte pour visualiser les déplacements</li>
+  <li>Une représentation en fonction du temps de la probabilité des activités pour voir quelle activité a été faîte a quel moment</li>
+  <li>Une représentation de la distance en fonction des activités</li>
+  <li>Une représentation de la distance en fonction des heures de la journée</li>
+</ul>
+</p>
+
+<p style="text-align : justify">Avant de nous lancer dans le développement, nous avons réalisé quelques design sheets. Ils sont tous disponibles sur la page d'accueil de notre site. Nous vous montrons ici la feuille finale correspondant à l'idée que nous nous sommes fait de notre site avant de commencer le développement :</p>
+
+![sheet_5](visualisations\sheet_5_bis.jpg)
+
+
+
+Nous avons donc ensuite développé notre solution disponible <a href="https://neyri.github.io/Projet-Data-viz/">ici</a>.
