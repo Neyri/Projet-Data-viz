@@ -6,7 +6,7 @@ function build_barchart(data_to_use){
     top: 20,
     right: 20,
     bottom: 20,
-    left: 30
+    left: 50
 	};
 	
 	var inner_width = d3.select("#div_distance_temps").node().getBoundingClientRect().width
