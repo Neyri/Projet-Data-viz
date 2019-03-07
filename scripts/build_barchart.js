@@ -63,28 +63,24 @@ function build_barchart(data_to_use) {
     if (lat1 != lat2 || long1 != long2) {
       var distance = Math.acos(Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(long2 - long1)) * 6371
       // modifier distances pour ajouter la valeure de distance pour chaque intervalle d'une heure !
-      var annexe = reference_table[daily_locations[i].date.getUTCHours()]
+      var annexe = reference_table[daily_locations[i].date.getHours()]
       distances[annexe] = distances[annexe] + distance
-      //distances['TOTAL'] = distances['TOTAL'] + distance
     }
   }
 
-  console.log(distances);
-  //console.log(reference_table)
-
   // Creation of the svg
+  var minH = new Date(daily_locations[0].date.setHours(0));
+  minH.setMinutes(0);
+  var maxH = new Date(daily_locations[0].date.setHours(23));
+  maxH.setMinutes(59);
   var parseTime = d3.timeFormat("%H %M")
-
   var t = d3.scaleTime()
-    .range([0, width]);
+    .range([0, width])
+    .domain([minH, maxH])
 
-  t.domain(d3.extent(daily_activities, function(d) {
-    return d.date;
-  }));
 
   var xAxis = d3.axisBottom()
     .scale(t);
-
 
   var y = d3.scaleLinear()
     .range([height, 0])
