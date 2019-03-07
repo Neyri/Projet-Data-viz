@@ -141,6 +141,13 @@
     .axis text {
       fill: #e6eeff;
     }
+	
+	#back-home{
+		width : 40px;
+		position : absolute;
+		top : 10px;
+		left : 10px;
+	}
   </style>
 </head>
 
@@ -148,6 +155,7 @@
   <h1 id="titre">Where was I ? How did I move ?<br/> The answer is right below...</h1>
   <div id="loading"></div>
   <div id="frame_to_choose" style="visibility:hidden;">
+	<a href="../index.html"><img src="../img/black-button-home.svg" id ="back-home"></a>
     <img src="../img/Minimize-Window-icon.png" alt="Minimize" class="minimize" onclick="minimize('selection')" />
     <div id="legend"></div>
     <div id="selection">
@@ -155,15 +163,6 @@
         <tr>
           <td>Please choose a date : </td>
           <td id="calendar"></td>
-        </tr>
-        <tr>
-          <td>Please choose someone :</td>
-          <td>
-            <select name="person" class="global_input">
-					<option selected="selected">Martin Chavin</option>
-					<option>Théo Ponton</option>
-				</select>
-          </td>
         </tr>
         <tr>
           <td>Please choose the time :</td>
