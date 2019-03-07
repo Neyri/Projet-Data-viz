@@ -6,12 +6,12 @@ function build_barchart(data_to_use) {
     top: 20,
     right: 20,
     bottom: 20,
-    left: 30
+    left: 50
   };
 
   var inner_width = d3.select("#div_distance_temps").node().getBoundingClientRect().width
   var width = inner_width - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 300 - margin.top - margin.bottom;
 
   var svg = d3.select("#div_distance_temps").append("svg")
     .attr("id", "distance_temps")

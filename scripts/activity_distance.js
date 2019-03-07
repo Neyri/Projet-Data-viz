@@ -10,7 +10,7 @@ function build_distances_acti(daily_locations, color) {
   };
   var inner_width = d3.select("#div_distance_acti").node().getBoundingClientRect().width
   var width = inner_width - margin.left - margin.right,
-    height = 400 - margin.top - margin.bottom;
+    height = 300 - margin.top - margin.bottom;
 
   var svg = d3.select("#div_distance_acti").append("svg")
     .attr("id", "probas_actis_distance")
