@@ -177,3 +177,10 @@ Exécutez ensuite le script python `filter.py` contenu dans le dossier `scripts`
 Lancez un serveur local avec votre outil préféré. Le mien étant d'exécuter la commande suivante `python -m http.server`.
 
 Votre visualisation est finalement disponible [ici](http://localhost:8000/visualisations/data_analysis.html).
+
+## Crédits
+
+Pour notre projet, certaines parties sont des reprises de développements  :
+
+- Le multi-range qui permet de sélectionner le temps : http://leaverou.github.io/multirange/
+- La carte est réalisée en utilisant OpenLayers : https://openlayers.org/ 
