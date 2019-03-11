@@ -86,3 +86,10 @@ Nous avons ensuite traité ces données à l'aide des scripts Python présents d
 
 
 Nous avons donc ensuite développé notre solution disponible <a href="https://neyri.github.io/Projet-Data-viz/">ici</a>.
+
+## Crédits
+
+Pour notre projet, certaines parties sont des reprises de développements  :
+
+- Le multi-range qui permet de sélectionner le temps : http://leaverou.github.io/multirange/
+- La carte est réalisée en utilisant OpenLayers : https://openlayers.org/
